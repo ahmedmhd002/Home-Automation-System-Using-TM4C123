@@ -1,0 +1,51 @@
+##IAR Ninja build file
+
+
+#Rules
+rule COMPILER_XCL
+  command = F$:\ahmed\common\bin\XclFileGenerator.exe $xclcommand -f "$rspfile_name"
+  description = IAR_NEW_TOOL+++COMPILER_XCL+++$in+++F$:\ahmed\common\bin\XclFileGenerator.exe $flags
+  rspfile = $rspfile_name
+  rspfile_content = $flags
+
+rule INDEXER
+  command = F$:\ahmed\common\bin\SourceIndexer.exe $flags
+  depfile = $out.dep
+  description = IAR_NEW_TOOL+++INDEXER+++$out+++F$:\ahmed\common\bin\SourceIndexer.exe $flags
+
+rule MAKEBROWSE
+  command = F$:\ahmed\common\bin\makeBrowseData.exe $flags
+  description = IAR_NEW_TOOL+++MAKEBROWSE+++$out+++F$:\ahmed\common\bin\makeBrowseData.exe $flags
+
+rule PDBLINK
+  command = F$:\ahmed\common\bin\PbdLink.exe $flags
+  description = IAR_NEW_TOOL+++PDBLINK+++$out+++F$:\ahmed\common\bin\PbdLink.exe $flags
+
+
+
+#Build steps
+build F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\main.xcl : COMPILER_XCL 
+  xclcommand = -source_file "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\main.c" -xcl_file "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\main.xcl" -macro_file "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\main.tmp" -icc_path F$:\ahmed\arm\bin\iccarm.exe
+  flags = "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\main.c" -o "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\Obj\\" --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config F$:\ahmed\arm\inc\c\DLib_Config_Normal.h -I "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\\" -I F$:\ahmed\arm\inc\TexasInstruments\ -On --predef_macros "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\main.tmp"
+  rspfile_name = F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\main.xcl.rsp
+
+build F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.xcl : COMPILER_XCL 
+  xclcommand = -source_file "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\project.c" -xcl_file "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.xcl" -macro_file "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.tmp" -icc_path F$:\ahmed\arm\bin\iccarm.exe
+  flags = "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\project.c" -o "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\Obj\\" --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config F$:\ahmed\arm\inc\c\DLib_Config_Normal.h -I "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\\" -I F$:\ahmed\arm\inc\TexasInstruments\ -On --predef_macros "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.tmp"
+  rspfile_name = F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.xcl.rsp
+
+build F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\main.pbi : INDEXER F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\main.xcl |  $
+F$:\ahmed\intro$ emb\last$ pp\simulator-iar\main.c
+  flags = "-out=F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\main.pbi" -f "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\main.xcl"
+
+build F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.pbi : INDEXER F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.xcl |  $
+F$:\ahmed\intro$ emb\last$ pp\simulator-iar\project.c
+  flags = "-out=F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.pbi" -f "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.xcl"
+
+build F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.pbw : MAKEBROWSE F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.pbd
+  flags = "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.pbd" -output "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.pbw"
+
+build F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.pbd : PDBLINK F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\main.pbi |  $
+F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.pbi
+  flags = -M "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.pbd" "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\main.pbi" "F$:\ahmed\intro$ emb\last$ pp\simulator-iar\Debug\BrowseInfo\project.pbi"
+
