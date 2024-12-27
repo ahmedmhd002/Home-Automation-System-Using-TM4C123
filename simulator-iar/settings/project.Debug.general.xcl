@@ -1,0 +1,15 @@
+"F:\ahmed\arm\bin\armPROC.dll" 
+
+"F:\ahmed\arm\bin\armLMIFTDI.dll" 
+
+"F:\ahmed\intro emb\simulator-iar\Debug\Exe\project.out" 
+
+--plugin="F:\ahmed\arm\bin\armbat.dll" 
+
+--device_macro="F:\ahmed\arm\config\debugger\TexasInstruments\TM4C123.dmac" 
+
+--flash_loader="F:\ahmed\arm\config\flashloader\TexasInstruments\FlashTC4_H6_o.board" 
+
+
+
+
